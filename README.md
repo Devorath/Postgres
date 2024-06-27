@@ -1,1 +1,2 @@
-aqui pondre todos mis datos
+aqui poner todos mis datos
+|
