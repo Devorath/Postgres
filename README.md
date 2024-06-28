@@ -777,8 +777,54 @@ SELECT * FROM pg_stat_replication;
 ### Objetivo: Realizar tareas de mantenimiento para asegurar el buen funcionamiento de PostgreSQL.
 ### autovacío (vacuum)
 ### Reindexado y análisis (reindex, analyze)
+### ANALYZE en PostgreSQL se utiliza para recopilar estadísticas sobre el contenido de las tablas en la base de datos y almacenar los resultados en el catálogo del sistema pg_statistic. Estas estadísticas son cruciales para que el planificador de consultas de PostgreSQL pueda determinar los planes de ejecución más eficientes para las consultas.
 
+### Funcionamiento de ANALYZE
+### Sin especificar tablas o columnas:
+
+### Si ANALYZE se ejecuta sin una lista específica de tablas o columnas, entonces se procesa automáticamente todas las tablas y vistas materializadas en la base de datos actual a las que el usuario tiene permiso para analizar.
+
+### ANALYZE;
+
+### Especificando tablas: Si se proporciona una lista de tablas, ANALYZE solo procesará esas tablas especificadas.
+### ANALYZE nombre_tabla1, nombre_tabla2;
+### Especificando tablas y columnas:
+
+Es posible afinar aún más el análisis proporcionando una lista de nombres de columnas para una tabla específica. En este caso, ANALYZE recopila estadísticas solo para esas columnas.
+sql
+Copiar código
+ANALYZE nombre_tabla (columna1, columna2);
+Ejemplo de uso:
+Sin parámetros:
+sql
+Copiar código
+ANALYZE;
+Esto actualizará las estadísticas de todas las tablas y vistas materializadas que el usuario actual tenga permiso para analizar en la base de datos actual.
+
+Especificando una tabla:
+sql
+Copiar código
+ANALYZE my_table;
+Esto actualizará las estadísticas de la tabla my_table.
+
+Especificando una tabla y columnas:
+sql
+Copiar código
+ANALYZE my_table (col1, col2);
+Esto actualizará las estadísticas solo de las columnas col1 y col2 de la tabla my_table.
+
+Beneficios del uso de ANALYZE
+Mejora del rendimiento de las consultas: El planificador de consultas de PostgreSQL utiliza las estadísticas para estimar el costo de diferentes planes de ejecución y elegir el más eficiente.
+Actualización de estadísticas: Las estadísticas pueden quedar desactualizadas con el tiempo, especialmente en tablas con un alto volumen de operaciones DML (inserciones, actualizaciones, eliminaciones). ANALYZE asegura que las estadísticas reflejen el estado actual de la tabla.
+Es una buena práctica ejecutar ANALYZE periódicamente, especialmente en bases de datos con mucha actividad, para mantener el rendimiento óptimo de las consultas.
 ### Migración de datos
+
+
+
+
+
+
+
 
 ### Reorganiza los índices de una tabla o base de datos.
 ### Presentación del proyecto
