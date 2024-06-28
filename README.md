@@ -773,9 +773,12 @@ SELECT * FROM pg_stat_replication;
 ![alt text](<replica en servidores.png>)
  
 ### Preparando el monitoreo
-
+### Mantenimiento de la Base de Datos 
+### Objetivo: Realizar tareas de mantenimiento para asegurar el buen funcionamiento de PostgreSQL.
+### autovacío (vacuum)
+### Reindexado y análisis (reindex, analyze)
 
 ### Migración de datos
 
-
+### Reorganiza los índices de una tabla o base de datos.
 ### Presentación del proyecto
