@@ -750,6 +750,8 @@ JOIN monitoreo."cat_battalion" AS e
 WHERE e.id_battalion = 3
 ORDER BY a.id_user;
 ```
+### Genera una consulta que muestre de la tabla id_user el nombre completo del usuario, el battalion sea = 'Celaya' (esto puede ser de gran utilidad para saber a que battallon pertenece)
+
 ```sql
 SELECT a.id_user, e.battalion,
     CONCAT(a.username, ' ', a.pat_name, ' ', a.mat_name) AS nombre_completo
@@ -760,14 +762,8 @@ WHERE e.battalion = 'Celaya'
 ORDER BY a.id_user;
 ```
 
-
-
-
-
-
-
 ### Preparando un proceso de réplica y alta disponibilidad
-
+![alt text](<replica en servidores.png>)
 
 ### Preparando el monitoreo
 
