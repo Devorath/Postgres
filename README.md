@@ -704,8 +704,6 @@ ALTER TABLE ONLY monitoreo.tbl_user
 --
 ```
 
-
-
 ### Gestión de usuarios, Seguridad y Privilegios.
 
 ## Se genera un usuario con permisos para usuario(role), password(m0nit0r)
@@ -733,6 +731,37 @@ CREATE ROLE monitor WITH
 ### Optimizando consultas mediante indice, 
 
 CREATE INDEX idx_tbl_user_username ON monitoreo.tbl_user (username);
+
+### Concatena el nombre, apellido paterno, apellido materno (puesto que el nombre, apellidos son necesarios para todas las consultas)
+
+```sql
+SELECT id_user,
+	concat(username, ' ', pat_name, ' ', mat_name) AS nombre_completo
+FROM monitoreo."tbl_user";
+```
+### Genera una consulta que muestre de la tabla id_user el nombre completo del usuario y el id_cat_battalion sea = 3 (esto puede ser de gran utilidad cuando se consulte por registros especificos de un catálogo)
+
+```sql
+SELECT a.id_user, e.id_battalion,
+    CONCAT(a.username, ' ', a.pat_name, ' ', a.mat_name) AS nombre_completo
+FROM monitoreo."tbl_user" AS a 
+JOIN monitoreo."cat_battalion" AS e
+    ON a.id_battalion = e.id_battalion
+WHERE e.id_battalion = 3
+ORDER BY a.id_user;
+```
+```sql
+SELECT a.id_user, e.battalion,
+    CONCAT(a.username, ' ', a.pat_name, ' ', a.mat_name) AS nombre_completo
+FROM monitoreo."tbl_user" AS a 
+JOIN monitoreo."cat_battalion" AS e
+    ON a.id_battalion = e.id_battalion
+WHERE e.battalion = 'Celaya'
+ORDER BY a.id_user;
+```
+
+
+
 
 
 
