@@ -762,9 +762,16 @@ WHERE e.battalion = 'Celaya'
 ORDER BY a.id_user;
 ```
 
-### Preparando un proceso de réplica y alta disponibilidad
-![alt text](<replica en servidores.png>)
+### Preparando un proceso de réplica y alta disponibilidad.
+### Tomando en cuenta la cantidad de registros diarios, actualizaciones en los usuarios y del tipo de información 'sensible', se recomienda realizar una Replicación Síncrona ya que facilita hacer los cambios mediante confirmaciones por al menos un servidor secundario antes de ser confirmados en el servidor primario; sin embargo no por que la opción que nos da sea "fácil" se debe perder de vista  monitorear el estado de la replicación  
 
+```sql
+SELECT * FROM pg_stat_replication;
+```
+
+### Mayor consistencia a costa de un rendimiento ligeramente inferior.
+![alt text](<replica en servidores.png>)
+ 
 ### Preparando el monitoreo
 
 
