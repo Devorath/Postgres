@@ -15,7 +15,7 @@ aqui poner todos mis datos
 ##### Interfaz gráfica de postgres, del lado izquierdo se encuentran los servers activos, las bases de datos, los Casts, Schemas,las tablas, índices, vistas, etc. Login/usuarios/roles. También se puede acceder al Shell, en el caso del Shell viene por default y está listo para ser utilizado y en el cmd de windows C:/Program Files/PostgreSQL/14/bin/.
 
 [Consulta las imagenes para mayor referencia]
-(https://github.com/Devorath/Postgres/commit/e93de0bd5639c7356c7e68b4833b92c082b82136?short_path=4bf22db#diff-4bf22db42c3833a7ca2485d6e6ed36b07ddd1d9455c451c1dd0075f3c2782df8)
+(https://github.com/Devorath/Postgres/tree/main/2.%20Configuraci%C3%B3n%20del%20entorno%20SQL)
 
 ### Diseño de la base de datos, el modelado de la base de datos se realiza mediante un modelado diagrama ER_Monitoreo.
 ### Crearemos una base de datos como db_monitoreo, un schema monitoreo y las tablas que permitan registrar a un usuario, y 
@@ -761,7 +761,6 @@ JOIN monitoreo."cat_battalion" AS e
 WHERE e.battalion = 'Celaya'
 ORDER BY a.id_user;
 ```
-
 ### Preparando un proceso de réplica y alta disponibilidad.
 ### Tomando en cuenta la cantidad de registros diarios, actualizaciones en los usuarios y del tipo de información 'sensible', se recomienda realizar una Replicación Síncrona ya que facilita hacer los cambios mediante confirmaciones por al menos un servidor secundario antes de ser confirmados en el servidor primario; sin embargo no por que la opción que nos da sea "fácil" se debe perder de vista  monitorear el estado de la replicación  
 
@@ -773,58 +772,27 @@ SELECT * FROM pg_stat_replication;
 ![alt text](<replica en servidores.png>)
  
 ### Preparando el monitoreo
-### Mantenimiento de la Base de Datos 
-### Objetivo: Realizar tareas de mantenimiento para asegurar el buen funcionamiento de PostgreSQL.
-### autovacío (vacuum)
-### Reindexado y análisis (reindex, analyze)
-### ANALYZE en PostgreSQL se utiliza para recopilar estadísticas sobre el contenido de las tablas en la base de datos y almacenar los resultados en el catálogo del sistema pg_statistic. Estas estadísticas son cruciales para que el planificador de consultas de PostgreSQL pueda determinar los planes de ejecución más eficientes para las consultas.
+### Mantenimiento de la Base de Datos para mantener el buen funcionamiento de PostgreSQL.
+### Para este caso es de considerarse el autovacío (vacuum)
+### También se considerará el Reindexado y análisis (reindex, analyze)
+### Por su contexto ANALYZE en PostgreSQL se utiliza para recopilar estadísticas sobre el contenido de las tablas en la base de datos y almacenar los resultados en el catálogo del sistema pg_statistic. Estas estadísticas son cruciales para que el planificador de consultas de PostgreSQL pueda determinar los planes de ejecución más eficientes para las consultas.
 
-### Funcionamiento de ANALYZE
-### Sin especificar tablas o columnas:
-
+### Funcionamiento de ANALYZE, sin especificar tablas o columnas.
 ### Si ANALYZE se ejecuta sin una lista específica de tablas o columnas, entonces se procesa automáticamente todas las tablas y vistas materializadas en la base de datos actual a las que el usuario tiene permiso para analizar.
 
-### ANALYZE;
-
-### Especificando tablas: Si se proporciona una lista de tablas, ANALYZE solo procesará esas tablas especificadas.
+### Especificando tablas, se proporciona una lista de tablas, ANALYZE solo procesará esas tablas especificadas.
 ### ANALYZE nombre_tabla1, nombre_tabla2;
-### Especificando tablas y columnas:
 
-Es posible afinar aún más el análisis proporcionando una lista de nombres de columnas para una tabla específica. En este caso, ANALYZE recopila estadísticas solo para esas columnas.
-sql
-Copiar código
-ANALYZE nombre_tabla (columna1, columna2);
-Ejemplo de uso:
-Sin parámetros:
-sql
-Copiar código
-ANALYZE;
-Esto actualizará las estadísticas de todas las tablas y vistas materializadas que el usuario actual tenga permiso para analizar en la base de datos actual.
+### Especificando tablas y columnas, es posible afinar aún más el análisis proporcionando una lista de nombres de columnas para una tabla específica. En este caso, ANALYZE recopila estadísticas solo para esas columnas, ANALYZE nombre_tabla (columna1, columna2);esto actualizará las estadísticas de todas las tablas y vistas materializadas que el usuario actual tenga permiso para analizar en la base de datos actual.
 
-Especificando una tabla:
-sql
-Copiar código
-ANALYZE my_table;
-Esto actualizará las estadísticas de la tabla my_table.
+### En conclusión beneficios del uso de ANALYZE, mejora del rendimiento de las consultas: El planificador de consultas de PostgreSQL utiliza las estadísticas para estimar el costo de diferentes planes de ejecución y elegir el más eficiente.
+### Actualización de estadísticas: Las estadísticas pueden quedar desactualizadas con el tiempo, especialmente en tablas con un alto volumen de operaciones DML (inserciones, actualizaciones, eliminaciones). ANALYZE asegura que las estadísticas reflejen el estado actual de la tabla. Es una buena práctica ejecutar ANALYZE periódicamente, especialmente en bases de datos con mucha actividad, para mantener el rendimiento óptimo de las consultas.
 
-Especificando una tabla y columnas:
-sql
-Copiar código
-ANALYZE my_table (col1, col2);
-Esto actualizará las estadísticas solo de las columnas col1 y col2 de la tabla my_table.
 
-Beneficios del uso de ANALYZE
-Mejora del rendimiento de las consultas: El planificador de consultas de PostgreSQL utiliza las estadísticas para estimar el costo de diferentes planes de ejecución y elegir el más eficiente.
-Actualización de estadísticas: Las estadísticas pueden quedar desactualizadas con el tiempo, especialmente en tablas con un alto volumen de operaciones DML (inserciones, actualizaciones, eliminaciones). ANALYZE asegura que las estadísticas reflejen el estado actual de la tabla.
-Es una buena práctica ejecutar ANALYZE periódicamente, especialmente en bases de datos con mucha actividad, para mantener el rendimiento óptimo de las consultas.
 ### Migración de datos
 
+### Considera la versión del servidor que manejas, el tipo de información que vas a migrar, si se manejan los mismos gestores de la base de datos, ya que estos pueden variar en cuanto a herramientas.
 
-
-
-
-
-
-
-### Reorganiza los índices de una tabla o base de datos.
 ### Presentación del proyecto
+
+### Un gusto haber presentado, está parte es una grata y entera satisfacción conocer personas tan entregadas a la labor no solo de docencia, sino al desempeño de dentro del ambito laboral, muchas gracias por el conocimiento, pues a pesar de que es aún me falta aprender me voy super agradecida y con más ganas de capacitarme. Mil gracias.
